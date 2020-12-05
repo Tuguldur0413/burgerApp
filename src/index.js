@@ -1,14 +1,47 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./pages/App";
+import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter } from "react-router-dom";
+import { createStore, applyMiddleware, combineReducers, compose } from "redux";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+import burgerReducer from "./redux/reducer/burgerReducer";
+import orderReducer from "./redux/reducer/orderReducer";
+import singupReducer from "./redux/reducer/singupReducer";
 
+const LoggerMiddleWare = (store) => {
+  return (next) => {
+    return (action) => {
+      console.log("MyLoggerMiddleware: Dispatching===>", action);
+      console.log("MyLoggerMiddleware: State Before ", store.getState());
+      const result = next(action);
+      console.log("MyLoggerMiddleware: State After ", store.getState());
+      return result;
+    };
+  };
+};
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const reducers = combineReducers({
+  burgerReducer,
+  orderReducer,
+  singupReducer,
+});
+const middlewares = [LoggerMiddleWare, thunk];
+const store = createStore(
+  reducers,
+  composeEnhancers(applyMiddleware(...middlewares))
+);
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  <Provider store={store}>
+    <BrowserRouter>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </BrowserRouter>
+  </Provider>,
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

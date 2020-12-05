@@ -1,0 +1,16 @@
+.Login {
+  width: 100%;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  box-shadow: 1px 1px 7px 3px rgb(160, 159, 159);
+  padding: 10px;
+  text-align: center;
+}
+
+.Login input {
+  display: block;
+  font-size: 20px;
+  padding: 5px;
+  margin: 10px auto;
+  border-color: rgb(247, 222, 185);
+}
